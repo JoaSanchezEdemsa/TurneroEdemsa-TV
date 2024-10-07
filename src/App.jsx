@@ -16,26 +16,31 @@ function App() {
   return (
     <div className="container">
       {/* Título de la tabla */}
-      <h1 className="title">Ciudad</h1>
+      <h1 className="title">Sucursal</h1>
       
       {/* Reloj en la esquina superior derecha */}
       <div className="time">{time.toLocaleTimeString()}</div>
 
       {/* Tabla de la lista */}
       <table className="city-table">
-        <thead>
+        <thead className='cabecera'>
           <tr>
-            <th>Sector</th>
-            <th>Nombre</th>
+            <th>BOX</th>
+            <th>NOMBRE</th>
             <th>DNI</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='boxes'>
           {/* Puedes agregar filas de datos aquí si lo deseas */}
           <tr>
             <td>Caja 1</td>
             <td>Pepe</td>
             <td>47259398</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
           </tr>
           <tr>
             <td></td>

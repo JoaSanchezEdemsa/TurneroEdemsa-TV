@@ -1,3 +1,8 @@
+html, body {
+  height: 100%; /* Asegúrate de que el html y el body ocupen toda la altura */
+  margin: 0; /* Elimina el margen por defecto del body */
+  padding: 0; /* Elimina el padding por defecto del body */
+}
 /* Estructura general */
 .container {
   display: flex;
@@ -6,49 +11,77 @@
   justify-content: center;
   height: 100vh;
   position: relative;
-  background-color: #ffffff; /* Fondo blanco */
+  background-color: #e9f5f8; /* Fondo suave para un aspecto profesional */
   font-family: 'Poppins', sans-serif; /* Aplicar fuente Poppins */
 }
 
 /* Título */
 .title {
+  margin-top: 0px;
   margin-bottom: 20px;
-  font-size: 500px; /* Tamaño de fuente para el título */
-  color: #333333; /* Texto en negro */
+  font-size: 100px; /* Tamaño de fuente reducido para el título */
+  color: #007acc; /* Color celeste */
+  text-align: center;
 }
 
 /* Reloj en la esquina superior derecha */
 .time {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 300px; /* Tamaño de fuente para el reloj */
+  top: 20px;
+  right: 20px;
+  font-size: 60px; /* Tamaño de fuente reducido para el reloj */
   color: #333333; /* Texto en negro */
+  font-weight: bold; /* Para que resalte más */
 }
 
 /* Tabla de la lista */
 .city-table {
   border-collapse: collapse;
-  width: 300px;
-  font-size: 300px; /* Tamaño de fuente para celdas */
+  width: 90%; /* Ancho adaptable */
+  max-width: 1200px; /* Ancho máximo para pantallas grandes */
+  margin-top: 20px; /* Margen superior para separarla del título */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+  border-radius: 10px; /* Bordes redondeados */
+  overflow: hidden; /* Para aplicar bordes redondeados */
 }
 
 .city-table thead {
   background-color: #007acc; /* Color celeste para el encabezado */
+  color: #ffffff; /* Texto blanco en el encabezado */
 }
 
-.city-table th,
+.city-table th {
+  text-align: center;
+  width: 200px; /* Ancho fijo para las celdas */
+  height: 100px; /* Alto fijo para las celdas */
+  border: none; /* Sin borde en el encabezado */
+  padding: 20px; /* Padding más sutil */
+  font-size: 50px; /* Tamaño de fuente reducido para celdas */
+  background-color: #6bb8ff; /* Color al pasar el ratón sobre la fila */
+
+}
+
 .city-table td {
   text-align: center;
-  padding: 10px;
-  border: 1px solid #cccccc;
+  width: 200px; /* Ancho fijo para las celdas */
+  height: 80px; /* Alto fijo para las celdas */
+  border: 1px solid #cccccc; /* Borde gris claro */
   color: #333333; /* Texto en negro para celdas */
+  overflow: hidden; /* Oculta el contenido que excede el área de la celda */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+  white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+  font-size: 40px; /* Tamaño de fuente reducido para celdas */
+  background-color: #ffffff; /* Fondo blanco para celdas */
 }
 
-.city-table tr:nth-child(odd) {
-  background-color: #f0f0f0; /* Color gris claro para filas impares */
+.city-table tr:nth-child(odd) td {
+  background-color: #fdecc8; /* Color naranja cálido para filas impares */
+  color: #ffffff; /* Texto en blanco para mejor contraste */
 }
 
-.city-table tr:nth-child(even) {
-  background-color: #cceeff; /* Color celeste claro para filas pares */
+.city-table tr:nth-child(even) td {
+  background-color: #b5f4ff; /* Color celeste para filas pares */
+  color: #ffffff; /* Texto en blanco para mejor contraste */
 }
+
+
