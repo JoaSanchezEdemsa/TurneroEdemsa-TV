@@ -25,9 +25,8 @@ function App() {
       <table className="city-table">
         <thead className='cabecera'>
           <tr>
-            <th>BOX</th>
-            <th>NOMBRE</th>
-            <th>DNI</th>
+            <th>SECTOR</th>
+            <th>CLIENTE</th>
           </tr>
         </thead>
         <tbody className='boxes'>
@@ -35,23 +34,49 @@ function App() {
           <tr>
             <td>Caja 1</td>
             <td>Pepe</td>
-            <td>47259398</td>
           </tr>
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
             <td></td>
             <td></td>
           </tr>
           <tr>
             <td></td>
             <td></td>
+          </tr>
+          <tr>
+            <td></td>
             <td></td>
           </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          {/* <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+    */}
+
         </tbody>
       </table>
     </div>

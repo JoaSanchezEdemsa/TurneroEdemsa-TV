@@ -8,21 +8,21 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content: flex-start; /* Cambiar a flex-start para mantener todo en su lugar */
+  height: 94.7vh;
   position: relative;
   background-color: #e9f5f8; /* Fondo suave para un aspecto profesional */
   font-family: 'Poppins', sans-serif; /* Aplicar fuente Poppins */
+  padding-top: 50px; /* Espacio en la parte superior para el título */
 }
 
-/* Título */
 .title {
-  margin-top: 0px;
-  margin-bottom: 20px;
-  font-size: 100px; /* Tamaño de fuente reducido para el título */
+  margin: 0; /* Eliminar márgenes */
+  font-size: 100px; /* Tamaño de fuente */
   color: #007acc; /* Color celeste */
   text-align: center;
 }
+
 
 /* Reloj en la esquina superior derecha */
 .time {
@@ -37,8 +37,8 @@ html, body {
 /* Tabla de la lista */
 .city-table {
   border-collapse: collapse;
-  width: 90%; /* Ancho adaptable */
-  max-width: 1200px; /* Ancho máximo para pantallas grandes */
+  width: 80%; /* Ancho adaptable */
+  table-layout: fixed; /* Establece el layout de la tabla como fijo */
   margin-top: 20px; /* Margen superior para separarla del título */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
   border-radius: 10px; /* Bordes redondeados */
@@ -52,8 +52,6 @@ html, body {
 
 .city-table th {
   text-align: center;
-  width: 200px; /* Ancho fijo para las celdas */
-  height: 100px; /* Alto fijo para las celdas */
   border: none; /* Sin borde en el encabezado */
   padding: 20px; /* Padding más sutil */
   font-size: 50px; /* Tamaño de fuente reducido para celdas */
@@ -63,25 +61,30 @@ html, body {
 
 .city-table td {
   text-align: center;
+  border: none; /* Sin borde en el encabezado */
+
   width: 200px; /* Ancho fijo para las celdas */
-  height: 80px; /* Alto fijo para las celdas */
-  border: 1px solid #cccccc; /* Borde gris claro */
+  height: 40px; /* Alto fijo para las celdas */
+ /* Borde gris claro */
   color: #333333; /* Texto en negro para celdas */
   overflow: hidden; /* Oculta el contenido que excede el área de la celda */
   text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
   white-space: nowrap; /* Evita que el texto se divida en varias líneas */
   font-size: 40px; /* Tamaño de fuente reducido para celdas */
   background-color: #ffffff; /* Fondo blanco para celdas */
+  font-weight: bold; /* Aumentar el grosor de la letra */
+  padding: 10px;
+
 }
 
 .city-table tr:nth-child(odd) td {
   background-color: #fdecc8; /* Color naranja cálido para filas impares */
-  color: #ffffff; /* Texto en blanco para mejor contraste */
+  color: #000000; /* Texto en blanco para mejor contraste */
 }
 
 .city-table tr:nth-child(even) td {
   background-color: #b5f4ff; /* Color celeste para filas pares */
-  color: #ffffff; /* Texto en blanco para mejor contraste */
+  color: #000000; /* Texto en blanco para mejor contraste */
 }
 
 
