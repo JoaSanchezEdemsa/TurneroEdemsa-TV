@@ -21,14 +21,12 @@ function App() {
   useEffect(() => {
     const fetchCajas = async () => {
       try {
-        const response = await axios.get('http://turnero:8080/tv/status', {
-          COD_UNICOM: '1200' 
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+        let COD_UNICOM = localStorage.getItem("COD_UNICOM");
+        console.log(COD_UNICOM)
+        const response = await axios.get(`http://turnero:8080/tv/status?COD_UNICOM=${COD_UNICOM}`);
+        console.log('Respuesta del backend:', response.data);
 
+        console.log('COD_UNICOM:', COD_UNICOM);
         console.log('Cajas obtenidas:', response.data); // Imprimir los datos en la consola
         
         // Verifica si la respuesta es exitosa
@@ -61,7 +59,7 @@ function App() {
   return (
     <div className="container">
       {/* Título de la tabla */}
-      <h1 className="title">Sucursal</h1>
+      <h1 className="title">TURNOS</h1>
       
       {/* Reloj en la esquina superior derecha */}
       <div className="time">{time.toLocaleTimeString()}</div>
@@ -76,8 +74,10 @@ function App() {
         </thead>
         <tbody className='boxes'>
           {cajas.map((caja, index) => (
-            <tr key={index}>
-              <td>{caja.caja}</td> {/* Muestra el nombre de la caja */}
+            <tr 
+              key={index} 
+              className={caja.resaltar === 1 ? 'activo' : ''} // Cambia la clase según el valor de resaltar
+      >       <td>{caja.caja}</td> {/* Muestra el nombre de la caja */}
               <td>{caja.cliente || 'N/A'}</td> {/* Muestra el cliente o 'N/A' si es null */}
             </tr>
           ))}

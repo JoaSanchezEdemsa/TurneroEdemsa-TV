@@ -1,57 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
-import axios from 'axios'; // Importa axios
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './SeleccionSucursal.css';
 
 const SeleccionSucursal = () => {
-  const [sucursales, setSucursales] = useState([]); // Estado para almacenar las sucursales
+  const [sucursales, setSucursales] = useState([]);
   const [sucursal, setSucursal] = useState('');
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
-  const [error, setError] = useState(null); // Estado para manejar errores
-  const navigate = useNavigate(); // Inicializa useNavigate
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [showBtn, setShowBtn] = useState('');
 
   useEffect(() => {
-    // Función para obtener sucursales del backend
     const fetchSucursales = async () => {
       try {
         const response = await axios.get('http://turnero:8080/getsucursales');
-        console.log('Sucursales obtenidas:', response.data); // Imprimir los datos en la consola
+        console.log('Sucursales obtenidas:', response.data);
 
         if (response.data.success && Array.isArray(response.data.result)) {
-          setSucursales(response.data.result); // Almacena las sucursales en el estado
+          setSucursales(response.data.result);
         } else {
           console.error('La respuesta no es válida:', response.data);
           setError('Error: la respuesta de la API no es válida.');
         }
       } catch (error) {
         console.error('Error fetching sucursales:', error);
-        setError('Error al cargar las sucursales'); // Establece un mensaje de error
+        setError('Error al cargar las sucursales');
       } finally {
-        setLoading(false); // Termina la carga
+        setLoading(false);
       }
     };
 
-    fetchSucursales(); // Llama a la función al montar el componente
+    fetchSucursales();
   }, []);
 
   const handleSucursalChange = (e) => {
+    //setSucursal(e.target.value);
     setSucursal(e.target.value);
+    setShowBtn(true);
   };
 
-  const handleIniciarClick = () => {
-    navigate('/pantalla'); // Redirige a la página principal
+  const handleIniciarClick = async () => {
+    localStorage.setItem('COD_UNICOM', sucursal);
+    console.log('COD_UNICOM a enviar:', sucursal); // Agrega este log
+    try {
+    //  const response = await axios.get(`http://turnero:8080/tv/status?COD_UNICOM=${sucursal}`);
+     // console.log('Respuesta del backend:', response.data);
+      navigate('/pantalla');
+    } catch (error) {
+      console.error('Error al enviar COD_UNICOM al backend:', error);
+    }
   };
+  
+  
 
   if (loading) {
-    return <p>Cargando sucursales...</p>; // Mensaje mientras se cargan los datos
+    return <p>Cargando sucursales...</p>;
   }
 
   if (error) {
-    return <p>{error}</p>; // Mensaje si hubo un error
+    return <p>{error}</p>;
   }
 
   if (sucursales.length === 0) {
-    return <p>No hay sucursales disponibles.</p>; // Mensaje si no hay sucursales
+    return <p>No hay sucursales disponibles.</p>;
   }
 
   return (
@@ -59,21 +71,20 @@ const SeleccionSucursal = () => {
       <div>
         <label>Sucursal</label>
         <select 
-          value={sucursal} 
+          value={sucursal}
           onChange={handleSucursalChange} 
           required 
         >
           <option value="">Seleccione...</option>
           {sucursales.map((suc, index) => (
-            <option key={index} value={suc.NOM_UNICOM}> {/* Usar COD_UNICOM como valor */}
+            <option key={index} value={suc.COD_UNICOM} > {/* Usar COD_UNICOM como valor */}
+            
               {suc.NOM_UNICOM} {/* Muestra el nombre en el desplegable */}
             </option>
           ))}
         </select>
       </div>
-      {sucursal && <p>Sucursal seleccionada: {sucursal}</p>}
-      {/* El botón "Iniciar" solo se renderiza si hay una sucursal seleccionada */}
-      {sucursal && (
+      {showBtn && (
         <button onClick={handleIniciarClick}>Iniciar</button>
       )}
     </div>
