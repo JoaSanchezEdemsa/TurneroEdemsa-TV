@@ -88,3 +88,8 @@ html, body {
 }
 
 
+.resaltar {
+  color: red !important;
+  font-size: 50px !important;
+  font-weight: bold !important;
+}

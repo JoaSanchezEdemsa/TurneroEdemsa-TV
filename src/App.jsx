@@ -7,6 +7,7 @@ function App() {
   const [cajas, setCajas] = useState([]); // Estado para almacenar las cajas
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
+  const [isWithinTime, setIsWithinTime] = useState(true); // Estado para controlar si está dentro del horario permitido
 
   // Hook para actualizar la hora actual
   useEffect(() => {
@@ -17,21 +18,39 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Hook para obtener las cajas
+  // Hook para verificar si la hora actual está dentro del rango permitido
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      const start = new Date();
+      const end = new Date();
+
+      // Configura el inicio y el final del rango de tiempo
+      start.setHours(7, 30, 0); // 7:30 AM
+      end.setHours(14, 0, 0);   // 2:00 PM
+
+      // Verifica si la hora actual está dentro del rango
+      setIsWithinTime(now >= start && now <= end);
+    };
+
+    checkTime(); // Llama a la función al montar el componente
+
+    // También verifica cada minuto si la hora ha cambiado
+    const timeCheckInterval = setInterval(checkTime, 60000);
+    
+    return () => clearInterval(timeCheckInterval); // Limpia el intervalo al desmontar
+  }, []);
+
+  // Hook para obtener las cajas al montar el componente y actualizar cada segundo
   useEffect(() => {
     const fetchCajas = async () => {
+      if (!isWithinTime) return; // No hace nada si no está dentro del horario
+
       try {
         let COD_UNICOM = localStorage.getItem("COD_UNICOM");
-        console.log(COD_UNICOM)
         const response = await axios.get(`http://turnero:8080/tv/status?COD_UNICOM=${COD_UNICOM}`);
-        console.log('Respuesta del backend:', response.data);
-
-        console.log('COD_UNICOM:', COD_UNICOM);
-        console.log('Cajas obtenidas:', response.data); // Imprimir los datos en la consola
         
-        // Verifica si la respuesta es exitosa
         if (response.data.success) {
-          // Convierte el objeto de resultados en un array
           const cajasArray = Object.values(response.data.result);
           setCajas(cajasArray); // Almacena las cajas en el estado
         } else {
@@ -46,7 +65,18 @@ function App() {
     };
 
     fetchCajas(); // Llama a la función al montar el componente
-  }, []);
+
+    const interval = setInterval(() => {
+      fetchCajas(); // Actualiza las cajas cada 1 segundo
+    }, 1000);
+
+    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonte
+  }, [isWithinTime]); // Ejecuta cuando isWithinTime cambie
+
+  // Si no está dentro del horario, muestra un mensaje
+  if (!isWithinTime) {
+    return <p>La aplicación está fuera del horario de atención. Vuelve entre las 7:30 AM y las 2:00 PM.</p>;
+  }
 
   if (loading) {
     return <p>Cargando cajas...</p>; // Mensaje mientras se cargan los datos
@@ -58,13 +88,8 @@ function App() {
 
   return (
     <div className="container">
-      {/* Título de la tabla */}
       <h1 className="title">TURNOS</h1>
-      
-      {/* Reloj en la esquina superior derecha */}
       <div className="time">{time.toLocaleTimeString()}</div>
-
-      {/* Tabla de la lista */}
       <table className="city-table">
         <thead className='cabecera'>
           <tr>
@@ -74,11 +99,13 @@ function App() {
         </thead>
         <tbody className='boxes'>
           {cajas.map((caja, index) => (
-            <tr 
-              key={index} 
-              className={caja.resaltar === 1 ? 'activo' : ''} // Cambia la clase según el valor de resaltar
-      >       <td>{caja.caja}</td> {/* Muestra el nombre de la caja */}
-              <td>{caja.cliente || 'N/A'}</td> {/* Muestra el cliente o 'N/A' si es null */}
+            <tr key={index}>
+              <td className={caja.resaltar === 1 ? 'resaltar' : ''}>
+                {caja.caja}
+              </td>
+              <td className={caja.resaltar === 1 ? 'resaltar' : ''}>
+                {caja.cliente || 'N/A'}
+              </td>
             </tr>
           ))}
         </tbody>

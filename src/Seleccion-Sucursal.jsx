@@ -15,7 +15,6 @@ const SeleccionSucursal = () => {
     const fetchSucursales = async () => {
       try {
         const response = await axios.get('http://turnero:8080/getsucursales');
-        console.log('Sucursales obtenidas:', response.data);
 
         if (response.data.success && Array.isArray(response.data.result)) {
           setSucursales(response.data.result);
