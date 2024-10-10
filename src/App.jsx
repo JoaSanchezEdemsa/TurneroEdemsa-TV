@@ -27,7 +27,7 @@ function App() {
 
       // Configura el inicio y el final del rango de tiempo
       start.setHours(7, 30, 0); // 7:30 AM
-      end.setHours(14, 0, 0);   // 2:00 PM
+      end.setHours(16, 0, 0);   // 2:00 PM
 
       // Verifica si la hora actual está dentro del rango
       setIsWithinTime(now >= start && now <= end);
