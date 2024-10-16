@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // Importa axios
-import './App.css';
+import './Pantalla.css';
 
 function App() {
   const [time, setTime] = useState(new Date());
@@ -8,6 +8,7 @@ function App() {
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
   const [isWithinTime, setIsWithinTime] = useState(true); // Estado para controlar si está dentro del horario permitido
+  const [previousResaltar, setPreviousResaltar] = useState(false); // Estado para rastrear si ya se reprodujo el sonido
 
   // Hook para actualizar la hora actual
   useEffect(() => {
@@ -37,7 +38,7 @@ function App() {
 
     // También verifica cada minuto si la hora ha cambiado
     const timeCheckInterval = setInterval(checkTime, 60000);
-    
+
     return () => clearInterval(timeCheckInterval); // Limpia el intervalo al desmontar
   }, []);
 
@@ -49,9 +50,28 @@ function App() {
       try {
         let COD_UNICOM = localStorage.getItem("COD_UNICOM");
         const response = await axios.get(`http://turnero:8080/tv/status?COD_UNICOM=${COD_UNICOM}`);
-        
+
         if (response.data.success) {
           const cajasArray = Object.values(response.data.result);
+          const hasResaltar = cajasArray.some(caja => caja.resaltar === 1);
+
+          // sonido si resaltar es 1 y si sessionstorage es distinto a 1
+          cajasArray.forEach((caja, index) => {
+            
+
+            if (caja.resaltar == 1 && sessionStorage.getItem(`sonar_${index}`) != 1) {// si resaltar es 1 y sessionstorage distinto a 1
+              const dingSound = new Audio('/ding.mp3'); // Crear el objeto de sonido
+              dingSound.play(); // Reproducir sonido
+              sessionStorage.setItem(`sonar_${index}`, 1);//luego de hacer sonar cambiar el sessionstorage a 1
+            }
+            if (caja.resaltar == 0) {
+              sessionStorage.setItem(`sonar_${index}`, 0);
+            }
+
+
+          });
+
+          setPreviousResaltar(hasResaltar); // Actualiza el estado para la siguiente comparación
           setCajas(cajasArray); // Almacena las cajas en el estado
         } else {
           setError('No se pudieron obtener las cajas');
@@ -71,7 +91,7 @@ function App() {
     }, 1000);
 
     return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonte
-  }, [isWithinTime]); // Ejecuta cuando isWithinTime cambie
+  }, [isWithinTime, previousResaltar]); // Ejecuta cuando isWithinTime o previousResaltar cambien
 
   // Si no está dentro del horario, muestra un mensaje
   if (!isWithinTime) {
@@ -85,6 +105,7 @@ function App() {
   if (error) {
     return <p>{error}</p>; // Mensaje si hubo un error
   }
+
 
   return (
     <div className="container">
@@ -104,7 +125,7 @@ function App() {
                 {caja.caja}
               </td>
               <td className={caja.resaltar === 1 ? 'resaltar' : ''}>
-                {caja.cliente || 'N/A'}
+                {caja.cliente || '-----'}
               </td>
             </tr>
           ))}

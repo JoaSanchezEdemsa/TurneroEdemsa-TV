@@ -15,9 +15,10 @@ const SeleccionSucursal = () => {
     const fetchSucursales = async () => {
       try {
         const response = await axios.get('http://turnero:8080/getsucursales');
-
-        if (response.data.success && Array.isArray(response.data.result)) {
-          setSucursales(response.data.result);
+  
+        // Verifica si la respuesta es un array
+        if (Array.isArray(response.data)) {
+          setSucursales(response.data);
         } else {
           console.error('La respuesta no es válida:', response.data);
           setError('Error: la respuesta de la API no es válida.');
@@ -29,9 +30,10 @@ const SeleccionSucursal = () => {
         setLoading(false);
       }
     };
-
+  
     fetchSucursales();
   }, []);
+  
 
   const handleSucursalChange = (e) => {
     //setSucursal(e.target.value);
