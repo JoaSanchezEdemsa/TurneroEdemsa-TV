@@ -26,9 +26,8 @@ function App() {
       const start = new Date();
       const end = new Date();
 
-      // Configura el inicio y el final del rango de tiempo
-      start.setHours(7, 30, 0); // 7:30 AM
-      end.setHours(16, 0, 0);   // 2:00 PM
+      start.setHours(7, 30, 0); 
+      end.setHours(16, 0, 0);  
 
       // Verifica si la hora actual está dentro del rango
       setIsWithinTime(now >= start && now <= end);
@@ -37,15 +36,16 @@ function App() {
     checkTime(); // Llama a la función al montar el componente
 
     // También verifica cada minuto si la hora ha cambiado
-    const timeCheckInterval = setInterval(checkTime, 60000);
+    const timeCheckInterval = setInterval(checkTime, 10000);
 
-    return () => clearInterval(timeCheckInterval); // Limpia el intervalo al desmontar
+    return () => clearInterval(timeCheckInterval); 
   }, []);
 
   // Hook para obtener las cajas al montar el componente y actualizar cada segundo
   useEffect(() => {
     const fetchCajas = async () => {
       if (!isWithinTime) return; // No hace nada si no está dentro del horario
+
 
       try {
         let COD_UNICOM = localStorage.getItem("COD_UNICOM");
@@ -56,8 +56,7 @@ function App() {
           const hasResaltar = cajasArray.some(caja => caja.resaltar === 1);
 
           // sonido si resaltar es 1 y si sessionstorage es distinto a 1
-          cajasArray.forEach((caja, index) => {
-            
+          cajasArray.forEach((caja, index) => {            
 
             if (caja.resaltar == 1 && sessionStorage.getItem(`sonar_${index}`) != 1) {// si resaltar es 1 y sessionstorage distinto a 1
               const dingSound = new Audio('/ding.mp3'); // Crear el objeto de sonido
@@ -78,9 +77,9 @@ function App() {
         }
       } catch (error) {
         console.error('Error fetching cajas:', error);
-        setError('Error al cargar las cajas'); // Establece un mensaje de error
+        setError('Error al cargar las cajas');
       } finally {
-        setLoading(false); // Termina la carga
+        setLoading(false); 
       }
     };
 
@@ -95,7 +94,7 @@ function App() {
 
   // Si no está dentro del horario, muestra un mensaje
   if (!isWithinTime) {
-    return <p>La aplicación está fuera del horario de atención. Vuelve entre las 7:30 AM y las 2:00 PM.</p>;
+    return <p>La aplicación está fuera del horario de atención. Vuelve entre las 7:30 AM y las 16:00 PM.</p>;
   }
 
   if (loading) {

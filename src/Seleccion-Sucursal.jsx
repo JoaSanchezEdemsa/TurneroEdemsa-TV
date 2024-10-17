@@ -36,17 +36,14 @@ const SeleccionSucursal = () => {
   
 
   const handleSucursalChange = (e) => {
-    //setSucursal(e.target.value);
     setSucursal(e.target.value);
     setShowBtn(true);
   };
 
   const handleIniciarClick = async () => {
     localStorage.setItem('COD_UNICOM', sucursal);
-    console.log('COD_UNICOM a enviar:', sucursal); // Agrega este log
+    console.log('COD_UNICOM a enviar:', sucursal); 
     try {
-    //  const response = await axios.get(`http://turnero:8080/tv/status?COD_UNICOM=${sucursal}`);
-     // console.log('Respuesta del backend:', response.data);
       navigate('/pantalla');
     } catch (error) {
       console.error('Error al enviar COD_UNICOM al backend:', error);
