@@ -9,10 +9,36 @@ const SeleccionSucursal = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [isWithinTime, setIsWithinTime] = useState(true); // Estado para controlar si está dentro del horario permitido
   const [showBtn, setShowBtn] = useState('');
+
+  // Hook para verificar si la hora actual está dentro del rango permitido
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      const start = new Date();
+      const end = new Date();
+
+      start.setHours(7, 30, 0); 
+      end.setHours(16, 0, 0);  
+
+      // Verifica si la hora actual está dentro del rango
+      setIsWithinTime(now >= start && now <= end);
+    };
+
+    checkTime(); // Llama a la función al montar el componente
+
+    // También verifica cada minuto si la hora ha cambiado
+    const timeCheckInterval = setInterval(checkTime, 10000);
+
+    return () => clearInterval(timeCheckInterval); 
+  }, []);
+
 
   useEffect(() => {
     const fetchSucursales = async () => {
+      if (!isWithinTime) return; // No hace nada si no está dentro del horario
+
       try {
         const response = await axios.get('http://turnero:8080/getsucursales');
   
@@ -50,7 +76,10 @@ const SeleccionSucursal = () => {
     }
   };
   
-  
+  // Si no está dentro del horario, muestra un mensaje
+  if (!isWithinTime) {
+    return <p>La aplicación está fuera del horario de atención. Vuelve entre las 7:30 AM y las 16:00 PM.</p>;
+  }
 
   if (loading) {
     return <p>Cargando sucursales...</p>;
